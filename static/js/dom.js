@@ -2,10 +2,12 @@
 let dom = {
     loadBoards: function() {
         // retrieves boards and makes showBoards called
+        dataHandler.getBoards(dom.showBoards);
     },
     showBoards: function(boards) {
         // shows boards appending them to #boards div
         // it adds necessary event listeners also
+        console.log(boards);
     },
     loadCards: function(boardId) {
         // retrieves cards and makes showCards called
@@ -29,5 +31,5 @@ let dom = {
 
         return elementToExtend.lastChild;
     }
-    // here comes more features
-}
+    // here come some more features
+};
