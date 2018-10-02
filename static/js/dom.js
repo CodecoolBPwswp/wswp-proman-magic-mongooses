@@ -8,6 +8,7 @@ let dom = {
         // shows boards appending them to #boards div
         // it adds necessary event listeners also
         console.log(boards);
+        // debugger;
     },
     loadCards: function(boardId) {
         // retrieves cards and makes showCards called

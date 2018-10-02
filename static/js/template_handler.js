@@ -1,0 +1,6 @@
+let templateHandler = {
+  _boardTemplate:
+      `
+      
+      `
+};
