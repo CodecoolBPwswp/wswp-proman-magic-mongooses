@@ -7,8 +7,15 @@ let dom = {
     showBoards: function(boards) {
         // shows boards appending them to #boards div
         // it adds necessary event listeners also
-        console.log(boards);
-        // debugger;
+        let boardsHTML = [];
+        for (let boardObject of boards) {
+            boardsHTML.push(templateHandler.render(boardObject));
+        }
+        let allBoardsHTML = boardsHTML.join("\n\n");
+
+        let boardsContainer = document.querySelector("#boards-div");
+        boardsContainer.innerHTML = allBoardsHTML;
+
     },
     loadCards: function(boardId) {
         // retrieves cards and makes showCards called
