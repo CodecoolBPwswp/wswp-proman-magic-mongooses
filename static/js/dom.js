@@ -14,6 +14,7 @@ let dom = {
         let allBoardsHTML = boardsHTML.join("\n\n");
 
         let boardsContainer = document.querySelector("#boards-div");
+
         boardsContainer.innerHTML = allBoardsHTML;
 
     },
@@ -38,6 +39,22 @@ let dom = {
         }
 
         return elementToExtend.lastChild;
-    }
+    },
+    initSaveBoardButton: function () {
+        let button = document.querySelector("#save-board-button");
+
+        button.addEventListener("click", function () {
+            let titleInput = document.querySelector("#new-board-title").value;
+            dataHandler.createNewBoard(titleInput, function () {
+                let boardsContainer = document.querySelector("#boards-div");
+                let newBoardHTML = templateHandler.render(
+                    {id: dataHandler.getGreatestId(), title: titleInput}
+                    );
+
+                dom.appendToElement(boardsContainer, newBoardHTML);
+            });
+        })
+    },
+
     // here come some more features
 };

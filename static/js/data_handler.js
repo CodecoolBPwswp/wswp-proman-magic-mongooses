@@ -17,6 +17,7 @@ let dataHandler = {
     },
     init: function() {
         dataHandler._loadData();
+        dom.initSaveBoardButton();
     },
     getBoards: function(callback) {
         // the boards are retrieved and then the callback function is called with the boards
@@ -40,9 +41,31 @@ let dataHandler = {
     },
     createNewBoard: function(boardTitle, callback) {
         // creates new board, saves it and calls the callback function with its data
+        let arrayOfBoards = dataHandler._data.boards;
+        let nextId = dataHandler.getNextId(arrayOfBoards);
+        arrayOfBoards.push({id: nextId, title: boardTitle, is_active: true});
+        localStorage.setItem(dataHandler.keyInLocalStorage, JSON.stringify(dataHandler._data));
+        callback(arrayOfBoards[arrayOfBoards.length - 1])
     },
     createNewCard: function(cardTitle, boardId, statusId, callback) {
         // creates new card, saves it and calls the callback function with its data
+    },
+    getNextId: function (arrayOfObjects) {
+        let existingIds = [];
+        for (let object of arrayOfObjects) {
+            existingIds.push(object["id"]);
+        }
+        let nextId = Math.max(...existingIds) + 1;
+        return nextId;
+    },
+    getGreatestId: function () {
+        let arrayOfBoards = dataHandler._data.boards;
+        let arrayOfIds = [];
+        for (let boardObject of arrayOfBoards) {
+            arrayOfIds.push(boardObject["id"]);
+        }
+        let greatestId = Math.max(...arrayOfIds);
+        return greatestId;
     }
     // here comes more features
 };
