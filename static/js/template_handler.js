@@ -1,9 +1,10 @@
 let templateHandler = {
     render: function(board) {
       let boardTitle = board.title;
+      let boardID = board.id;
       let boardTemplate =
           `
-      <div class="board-container">
+      <div class="board-container" data-board-id="${boardID}">
             <div class="board-header row">
                 <div class="col-sm-10 col-md-8">
                     <p>${boardTitle}</p>
