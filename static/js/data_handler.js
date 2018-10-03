@@ -26,6 +26,7 @@ let dataHandler = {
     },
     getBoard: function(boardId, callback) {
         // the board is retrieved and then the callback function is called with the board
+
     },
     getStatuses: function(callback) {
         // the statuses are retrieved and then the callback function is called with the statuses
@@ -35,6 +36,8 @@ let dataHandler = {
     },
     getCardsByBoardId: function(boardId, callback) {
         // the cards are retrieved and then the callback function is called with the cards
+        let cardsOfBoard = dataHandler._data.cards.filter(cardObject => cardObject.board_id === boardId);
+        callback(cardsOfBoard);
     },
     getCard: function(cardId, callback) {
         // the card is retrieved and then the callback function is called with the card
@@ -49,6 +52,11 @@ let dataHandler = {
     },
     createNewCard: function(cardTitle, boardId, statusId, callback) {
         // creates new card, saves it and calls the callback function with its data
+        let arrayOfCards = dataHandler._data.cards;
+        let nextId = dataHandler.getNextId(arrayOfCards);
+        arrayOfCards.push({id: nextId, title: cardTitle, board_id: boardId, status_id: statusId, order: 33})
+        localStorage.setItem(dataHandler.keyInLocalStorage, JSON.stringify(dataHandler._data));
+        callback(arrayOfCards[arrayOfCards.length - 1]);
     },
     getNextId: function (arrayOfObjects) {
         let existingIds = [];
@@ -58,14 +66,18 @@ let dataHandler = {
         let nextId = Math.max(...existingIds) + 1;
         return nextId;
     },
-    getGreatestId: function () {
-        let arrayOfBoards = dataHandler._data.boards;
+    getGreatestId: function (dataType) {
+        let arrayOfData = dataHandler._data[dataType];
         let arrayOfIds = [];
-        for (let boardObject of arrayOfBoards) {
-            arrayOfIds.push(boardObject["id"]);
+        for (let dataObject of arrayOfData) {
+            arrayOfIds.push(dataObject["id"]);
         }
         let greatestId = Math.max(...arrayOfIds);
         return greatestId;
+    },
+    getOrderLast: function (boardId, statusID) {
+
+
     }
     // here comes more features
 };

@@ -1,5 +1,5 @@
 let templateHandler = {
-    render: function(board) {
+    renderBoard: function(board) {
       let boardTitle = board.title;
       let boardID = board.id;
       let boardTemplate =
@@ -10,7 +10,11 @@ let templateHandler = {
             <p>${boardTitle}</p>
           </div>
           <div class="col-sm-2 col-md-4">
-            <p><button class="btn btn-success">New Card</button></p>
+            <p><button class="btn btn-success"
+                       id="new-card-button" 
+                       data-toggle="modal" 
+                       data-target="#new-card-modal" 
+                       data-board-id="${boardID}">New Card</button></p>
           </div>
         </div>
         <div id="board-${boardID}-content" class="collapse">
@@ -21,14 +25,27 @@ let templateHandler = {
             <div class="status-head col-sm-3">Done</div>
           </div>
           <div class="status-content row">
-            <div class="board-status-new card-container col-sm-3"></div>
-            <div class="board-status-in-progress card-container col-sm-3"></div>
-            <div class="board-status-testing card-container col-sm-3"></div>
-            <div class="board-status-done card-container col-sm-3"></div>
+            <div class="board-status-1 card-container col-sm-3"></div>
+            <div class="board-status-2 card-container col-sm-3"></div>
+            <div class="board-status-3 card-container col-sm-3"></div>
+            <div class="board-status-4 card-container col-sm-3"></div>
           </div>
         </div>
       </div>
       `;
       return boardTemplate;
-  },
+    },
+    renderCard: function (card) {
+        let cardTitle = card.title;
+        let cardTemplate =
+            `
+            <div class="card">
+                <p>${cardTitle}</p>
+            </div>
+            `;
+        return cardTemplate;
+    },
+    initNewCardModal: function () {
+        $("#new-card-modal").on("shown.bs.modal", dom.initSaveNewCardButton);
+    }
 };

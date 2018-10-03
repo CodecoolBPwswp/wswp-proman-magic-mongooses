@@ -17,3 +17,8 @@
 .status-head {
     text-align: center;
 }
+
+.card {
+    border: 1px solid red;
+    border-radius: 4px;
+}
