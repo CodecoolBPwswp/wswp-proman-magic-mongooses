@@ -15,7 +15,13 @@ let dom = {
             dom.appendToElement(boardsContainer, boardHTML);
             let newCardButton = document.querySelector(`#new-card-button-board-${boardObject["id"]}`);
             newCardButton.addEventListener("click", function () {
-                dom.initSaveNewCardButton(boardObject["id"])
+                let cardTitleInput = document.querySelector("#new-card-title");
+                cardTitleInput.value = "";
+                let saveNewCardButton = document.querySelector("#save-card-button");
+                saveNewCardButton.addEventListener("click", function () {
+                    dom.saveNewCard(boardObject["id"]);
+                    this.removeEventListener("click", arguments.callee);
+                })
             });
         }
     },
@@ -73,7 +79,7 @@ let dom = {
             });
         })
     },
-    initSaveNewCardButton: function (boardId) {
+    saveNewCard: function (boardId) {
         let cardTitleInput = document.querySelector("#new-card-title").value;
         let initialStatusId = 1;
         dataHandler.createNewCard(cardTitleInput, boardId, initialStatusId, function () {
@@ -82,7 +88,7 @@ let dom = {
                 {id: dataHandler.getGreatestId("cards"), title: cardTitleInput}
                 );
             dom.appendToElement(boardStatusDiv, newCardHTML);
-        })
+        });
     }
 
     // here come some more features
