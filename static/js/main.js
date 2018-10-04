@@ -6,8 +6,6 @@ function init() {
     dom.loadBoards();
     // loads the cards for each board
     dom.loadAllCards();
-    // initializes new card modal
-    templateHandler.initNewCardModal();
 }
 
 init();

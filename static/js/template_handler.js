@@ -11,7 +11,7 @@ let templateHandler = {
           </div>
           <div class="col-sm-2 col-md-4">
             <p><button class="btn btn-success"
-                       id="new-card-button" 
+                       id="new-card-button-board-${boardID}" 
                        data-toggle="modal" 
                        data-target="#new-card-modal" 
                        data-board-id="${boardID}">New Card</button></p>
@@ -44,8 +44,5 @@ let templateHandler = {
             </div>
             `;
         return cardTemplate;
-    },
-    initNewCardModal: function () {
-        $("#new-card-modal").on("shown.bs.modal", dom.initSaveNewCardButton);
     }
 };

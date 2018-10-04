@@ -13,6 +13,10 @@ let dom = {
         for (let boardObject of boards) {
             let boardHTML = templateHandler.renderBoard(boardObject);
             dom.appendToElement(boardsContainer, boardHTML);
+            let newCardButton = document.querySelector(`#new-card-button-board-${boardObject["id"]}`);
+            newCardButton.addEventListener("click", function () {
+                dom.initSaveNewCardButton(boardObject["id"])
+            });
         }
     },
     loadCardsByBoard: function(arrayOfBoards) {
@@ -69,12 +73,11 @@ let dom = {
             });
         })
     },
-    initSaveNewCardButton: function () {
+    initSaveNewCardButton: function (boardId) {
         let cardTitleInput = document.querySelector("#new-card-title").value;
-        let boardIdOfCard = Number(document.querySelector("#new-card-button").dataset.boardId);
         let initialStatusId = 1;
-        dataHandler.createNewCard(cardTitleInput, boardIdOfCard, initialStatusId, function () {
-            let boardStatusDiv = document.querySelector(`#board-${boardIdOfCard}-content .board-status-${initialStatusId}`);
+        dataHandler.createNewCard(cardTitleInput, boardId, initialStatusId, function () {
+            let boardStatusDiv = document.querySelector(`#board-${boardId}-content .board-status-${initialStatusId}`);
             let newCardHTML = templateHandler.renderCard(
                 {id: dataHandler.getGreatestId("cards"), title: cardTitleInput}
                 );
