@@ -28,8 +28,10 @@ let dataHandler = {
         // the board is retrieved and then the callback function is called with the board
 
     },
-    getStatuses: function(callback) {
+    getStatuses: function() {
         // the statuses are retrieved and then the callback function is called with the statuses
+        let statuses = dataHandler._data.statuses;
+        return statuses;
     },
     getStatus: function(statusId, callback) {
         // the status is retrieved and then the callback function is called with the status
