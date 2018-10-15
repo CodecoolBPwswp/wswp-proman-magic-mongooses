@@ -56,13 +56,14 @@ let dataHandler = {
         // creates new card, saves it and calls the callback function with its data
         let arrayOfCards = dataHandler._data.cards;
         let nextId = dataHandler.getNextId(arrayOfCards);
-        arrayOfCards.push({id: nextId, title: cardTitle, board_id: boardId, status_id: statusId, order: 33})
+        let newCard = {id: nextId, title: cardTitle, board_id: boardId, status_id: statusId, order: 33};
+        arrayOfCards.push(newCard);
         localStorage.setItem(dataHandler.keyInLocalStorage, JSON.stringify(dataHandler._data));
         callback(arrayOfCards[arrayOfCards.length - 1]);
     },
     getNextId: function (arrayOfObjects) {
         let existingIds = [];
-        for (let object of arrayOfObjects) {
+        for (let object of arrayOfObjects) { // could be a simple max algorithm
             existingIds.push(object["id"]);
         }
         let nextId = Math.max(...existingIds) + 1;

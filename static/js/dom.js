@@ -9,7 +9,7 @@ let dom = {
         newCardButton.addEventListener("click", function () {
             let cardTitleInput = document.querySelector("#new-card-title");
             cardTitleInput.value = "";
-            let saveNewCardButton = document.querySelector("#save-card-button");
+            let saveNewCardButton = document.querySelector("#save-card-button"); // event listeners into different methods
             saveNewCardButton.addEventListener("click", function (event) {
                 dom.saveNewCard(boardId);
                 this.removeEventListener("click", arguments.callee);
