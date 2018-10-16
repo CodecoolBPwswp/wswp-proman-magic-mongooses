@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import data_manager
 import json
 
@@ -23,6 +23,13 @@ def record_api(table_name, _id):
     record = data_manager.get_record(table_name, _id)
     json_record = json.dumps(record)
     return json_record
+
+
+@app.route("/api/<table_name>/insert", methods=["POST"])
+def save_record(table_name):
+    record_to_save = request.form.to_dict()
+    data_manager.insert_record(table_name, record_to_save)
+    return "HTTP/1.1 200 OK"
 
 
 def main():
