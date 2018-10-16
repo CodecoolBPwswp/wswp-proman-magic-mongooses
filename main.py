@@ -15,7 +15,7 @@ def boards():
 def table_api(table_name):
     table = data_manager.get_table(table_name)
     json_table = json.dumps(table)
-    return json_table
+    return json_table  # TODO: should we give back anything else, like details of a http response?
 
 
 @app.route("/api/<table_name>/<_id>")
@@ -29,7 +29,7 @@ def record_api(table_name, _id):
 def save_record(table_name):
     record_to_save = request.form.to_dict()
     data_manager.insert_record(table_name, record_to_save)
-    return "HTTP/1.1 200 OK"
+    return "HTTP/1.1 200 OK"  # TODO: ask a mentor for a proper way to give http response
 
 
 def main():
