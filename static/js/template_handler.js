@@ -44,7 +44,7 @@ let templateHandler = {
         let cardTemplate =
             `
             <div class="task-card col-sm-12">
-                <p>${cardTitle}</p>
+                ${cardTitle}
             </div>
             `;
         return cardTemplate;

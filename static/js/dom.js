@@ -1,6 +1,6 @@
 // It uses data_handler.js to visualize elements
 let dom = {
-    loadBoards: function() {
+    loadBoards: function () {
         // retrieves boards and makes showBoards called
         dataHandler.getBoards(dom.showBoards);
     },
@@ -15,7 +15,7 @@ let dom = {
                 this.removeEventListener("click", arguments.callee);
             })
         });
-    }, showBoards: function(boards) {
+    }, showBoards: function (boards) {
         // shows boards appending them to #boards div
         // it adds necessary event listeners also
         let boardsContainer = document.querySelector("#boards-div");
@@ -26,18 +26,22 @@ let dom = {
             dom.appendToElement(boardsContainer, boardHTML);
             dom.initNewCardButton(boardObject["id"], arguments);
         }
+        let dropable = Array.from(document.querySelectorAll('.card-container'));
+        dragula(dropable);
+        //localStorage.setItem(dataHandler.keyInLocalStorage, JSON.stringify(dataHandler._data));
+        debugger;
     },
-    loadCardsByBoard: function(arrayOfBoards) {
+    loadCardsByBoard: function (arrayOfBoards) {
         // retrieves cards and makes showCards called
         for (let board of arrayOfBoards) {
             dataHandler.getCardsByBoardId(board["id"], dom.showCards);
         }
     },
-    showCards: function(cards) {
+    showCards: function (cards) {
         // shows the cards of a board
         // it adds necessary event listeners also
         if (cards.length > 0) {
-                let boardId = cards[0].board_id;
+            let boardId = cards[0].board_id;
 
             for (let singleCard of cards) {
                 let statusId = singleCard.status_id;
@@ -46,14 +50,13 @@ let dom = {
                 dom.appendToElement(boardStatusDiv, cardHTML);
             }
         }
-        let dropable = Array.from(document.querySelectorAll('.card-container'));
-        dragula(dropable);
+
     },
     loadAllCards: function () {
         dataHandler.getBoards(dom.loadCardsByBoard);
 
     },
-    appendToElement: function(elementToExtend, textToAppend, prepend = false) {
+    appendToElement: function (elementToExtend, textToAppend, prepend = false) {
         // function to append new DOM elements (represented by a string) to an existing DOM element
         let fakeDiv = document.createElement('div');
         fakeDiv.innerHTML = textToAppend.trim();
@@ -82,7 +85,7 @@ let dom = {
                 let newBoardId = dataHandler.getGreatestId("boards");
                 let newBoardHTML = templateHandler.renderBoard(
                     {id: newBoardId, title: titleInput}
-                    );
+                );
 
                 dom.appendToElement(boardsContainer, newBoardHTML);
                 dom.initNewCardButton(newBoardId);
@@ -99,7 +102,7 @@ let dom = {
             let boardStatusDiv = document.querySelector(`#board-${boardId}-content .board-status-${initialStatusId}`);
             let newCardHTML = templateHandler.renderCard(
                 {id: dataHandler.getGreatestId("cards"), title: cardTitleInput}
-                );
+            );
             dom.appendToElement(boardStatusDiv, newCardHTML);
         });
     }
