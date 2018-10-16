@@ -13,6 +13,6 @@ def get_table(cursor, table_name):
 def get_record(cursor, table_name, _id):
     cursor.execute(sql.SQL("""
                 SELECT * FROM {} WHERE id = {}
-                """).format(sql.Identifier(table_name), _id))
+                """).format(sql.Identifier(table_name), sql.Literal(_id)))
     row = cursor.fetchone()
     return row
