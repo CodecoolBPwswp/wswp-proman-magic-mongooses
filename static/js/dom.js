@@ -46,6 +46,8 @@ let dom = {
                 dom.appendToElement(boardStatusDiv, cardHTML);
             }
         }
+        let dropable = Array.from(document.querySelectorAll('.card-container'));
+        dragula(dropable);
     },
     loadAllCards: function () {
         dataHandler.getBoards(dom.loadCardsByBoard);
