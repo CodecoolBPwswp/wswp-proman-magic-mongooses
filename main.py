@@ -39,6 +39,12 @@ def update_record(table_name, _id):
     return "HTTP/1.1 200 OK"
 
 
+@app.route("/api/<table_name>/<_id>/delete", methods=["DELETE"])
+def delete_record(table_name, _id):
+    data_manager.delete_record(table_name, _id)
+    return "HTTP/1.1 200 OK"
+
+
 def main():
     app.run(debug=True,
             host="0.0.0.0",
