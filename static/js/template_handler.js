@@ -1,10 +1,10 @@
 let templateHandler = {
-    renderBoard: function(board) {
-      let boardTitle = board.title;
-      let boardID = board.id;
-      let arrayOfStatuses = dataHandler.getStatuses();
-      let boardTemplate =
-          `
+    renderBoard: function (board) {
+        let boardTitle = board.title;
+        let boardID = board.id;
+        let arrayOfStatuses = dataHandler.getStatuses();
+        let boardTemplate =
+            `
       <div class="board-container" data-board-id="${boardID}">
         <div class="board-header row collapsed" data-toggle="collapse" data-target="#board-${boardID}-content">
           <div class="heading-text col-7 col-sm-9">
@@ -37,7 +37,7 @@ let templateHandler = {
           </div>
         </div>
       `;
-      return boardTemplate;
+        return boardTemplate;
     },
     renderCard: function (card) {
         let cardTitle = card.title;
@@ -45,9 +45,7 @@ let templateHandler = {
         let cardId = card.id;
         let cardBoardId = card.board_id;
         let cardTemplate =
-            `
-            <div class="task-card col-sm-12" data-card-id="${cardId}" data-board-id="${cardBoardId}">${cardTitle}</div>
-            `;
+            `<div class="task-card col-sm-12" data-card-id="${cardId}" data-board-id="${cardBoardId}">${cardTitle}</div>`;
         return cardTemplate;
     }
 };

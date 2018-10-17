@@ -31,7 +31,8 @@ let dom = {
                 let newCardTitle = document.querySelector("#new-card-title");
                 newCardTitle.value = "";
             })
-        };
+        }
+        ;
     },
     showBoards: function (boards) {
         // shows boards appending them to #boards div
@@ -113,7 +114,8 @@ let dom = {
         }
         let initialStatusId = 1;
         dataHandler.createNewCard(cardTitleInput, boardId, initialStatusId, function () {
-            let boardStatusDiv = document.querySelector(`#board-${boardId}-content .board-status-${initialStatusId}`);
+            let boardStatusDiv =
+                document.querySelector(`#board-${boardId}-content .board-status-${initialStatusId} .card-container`);
             let newCardHTML = templateHandler.renderCard(
                 {id: dataHandler.getGreatestId("cards"), title: cardTitleInput}
             );
