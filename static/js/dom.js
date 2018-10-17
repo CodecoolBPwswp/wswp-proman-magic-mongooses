@@ -7,6 +7,7 @@ let dom = {
         dom.setBoardIdOnNewCardModal();
         dom.initNewCardButton();
         dom.loadAllCards();
+        dom.initDeleteCardButton();
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
@@ -116,13 +117,20 @@ let dom = {
                 {id: dataHandler.getGreatestId("cards"), title: cardTitleInput}
             );
             dom.appendToElement(boardStatusDiv, newCardHTML);
-        });
+        })
     },
     initNewBoardButton: function () {
         let newBoardButton = document.querySelector("#new-board-button");
         newBoardButton.addEventListener("click", function () {
             let boardTitleInput = document.querySelector("#new-board-title");
             boardTitleInput.value = "";
+        })
+    },
+    initDeleteCardButton: function () {
+        let deleteCardButton = document.querySelector(`#delete-card`);
+        deleteCardButton.addEventListener('click', function () {
+            let cardId = deleteCardButton.dataset.cardId;
+            dataHandler.deleteCard(cardId);
         })
     }
 };
