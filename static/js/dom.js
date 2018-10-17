@@ -2,6 +2,8 @@
 let dom = {
     init: function () {
         dom.loadBoards();
+        dom.initNewBoardButton();
+        dom.initSaveBoardButton();
         dom.setBoardIdOnNewCardModal();
         dom.initNewCardButton();
         dom.loadAllCards();
@@ -15,9 +17,7 @@ let dom = {
         saveNewCardButton.addEventListener("click", function () {
             let newCardModal = document.querySelector('#new-card-modal');
             let boardId = newCardModal.dataset.boardId;
-                dom.saveNewCard(boardId);
-            //let newCardButton = document.getElementById('new-card-title');
-            //newCardButton.value = "";
+            dom.saveNewCard(boardId);
         })
     },
     setBoardIdOnNewCardModal: function () {
@@ -28,6 +28,8 @@ let dom = {
                 let boardId = newCardButton.dataset.boardId;
                 let newCardModal = document.querySelector('#new-card-modal');
                 newCardModal.dataset.boardId = boardId;
+                let newCardTitle = document.querySelector("#new-card-title")
+                newCardTitle.value = "";
             })
 
         }
@@ -99,7 +101,6 @@ let dom = {
                 );
 
                 dom.appendToElement(boardsContainer, newBoardHTML);
-                //dom.initNewCardButton();
             });
         })
     },
@@ -116,7 +117,12 @@ let dom = {
             );
             dom.appendToElement(boardStatusDiv, newCardHTML);
         });
+    },
+    initNewBoardButton: function () {
+        let newBoardButton = document.querySelector("#new-board-button");
+        newBoardButton.addEventListener("click", function () {
+            let boardTitleInput = document.querySelector("#new-board-title");
+            boardTitleInput.value = "";
+        })
     }
-
-    // here come some more features
 };
