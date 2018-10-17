@@ -31,6 +31,12 @@ def login_verification():
         return redirect(url_for("login_page"))  # TODO: display error message
 
 
+@app.route("/logout", methods=["POST"])
+def logout():
+    session.pop("user")
+    return redirect(url_for("login_page"))
+
+
 @app.route("/api/<table_name>")
 def table_api(table_name):
     table = data_manager.get_table(table_name)

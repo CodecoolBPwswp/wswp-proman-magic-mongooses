@@ -12,12 +12,16 @@
 
 {% block content %}
 
-    <div class="header-div container-fixed">
+    <div class="header-div container-fixed d-flex justify-content-between">
         <button id="new-board-button"
                 class="btn btn-success"
                 type="button"
                 data-toggle="modal"
                 data-target="#new-board-modal">New Board</button>
+
+        <form action="{{ url_for("logout") }}" method="post">
+            <button type="submit" class="btn btn-danger">Sign out</button>
+        </form>
     </div>
     <div id="boards-div">Boards are loading...</div>
 
