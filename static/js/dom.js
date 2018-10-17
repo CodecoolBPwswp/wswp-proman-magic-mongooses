@@ -45,7 +45,6 @@ let dom = {
         }
         let dropable = Array.from(document.querySelectorAll('.card-container'));
         dragula(dropable);
-        dataHandler.saveDroppedCard()
 
     },
     loadCardsByBoard: function (arrayOfBoards) {
