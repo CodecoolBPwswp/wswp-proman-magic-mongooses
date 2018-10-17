@@ -21,19 +21,19 @@ let templateHandler = {
         <div id="board-${boardID}-content" class="row collapse">
           <div class="board-status board-status-1 col-sm-6 col-md-3">
             <div class="status-head">${arrayOfStatuses[0]["name"]}</div>
-            <div class="card-container"></div>
+            <div class="card-container" data-status-id="1"></div>
           </div>
           <div class="board-status board-status-2 col-sm-6 col-md-3">
             <div class="status-head">${arrayOfStatuses[1]["name"]}</div>
-            <div class="card-container"></div>
+            <div class="card-container" data-status-id="2"></div>
           </div>
           <div class="board-status board-status-3 col-sm-6 col-md-3">
             <div class="status-head">${arrayOfStatuses[2]["name"]}</div>
-            <div class="card-container"></div>
+            <div class="card-container" data-status-id="3"></div>
           </div>
           <div class="board-status board-status-4 col-sm-6 col-md-3">
             <div class="status-head">${arrayOfStatuses[3]["name"]}</div>
-            <div class="card-container"></div>
+            <div class="card-container" data-status-id="4"></div>
           </div>
         </div>
       `;
@@ -41,11 +41,12 @@ let templateHandler = {
     },
     renderCard: function (card) {
         let cardTitle = card.title;
+        console.log(cardTitle);
+        let cardId = card.id;
+        let cardBoardId = card.board_id;
         let cardTemplate =
             `
-            <div class="task-card col-sm-12">
-                <p>${cardTitle}</p>
-            </div>
+            <div class="task-card col-sm-12" data-card-id="${cardId}" data-board-id="${cardBoardId}">${cardTitle}</div>
             `;
         return cardTemplate;
     }
