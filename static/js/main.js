@@ -3,11 +3,6 @@ function init() {
     // init data
     dataHandler.init();
     // loads the boards to the screen
-    dom.loadBoards();
-    dom.setBoardIdOnNewCardModal();
-    dom.initNewCardButton();
-    // loads the cards for each board
-    dom.loadAllCards();
 }
 
 init();

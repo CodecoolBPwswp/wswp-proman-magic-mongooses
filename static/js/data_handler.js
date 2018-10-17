@@ -6,18 +6,31 @@
 let dataHandler = {
     keyInLocalStorage: 'proman-data', // the string that you use as a key in localStorage to save your application data
     _data: {}, // it contains the boards and their cards and statuses. It is not called from outside.
-    _loadData: function () {
+    _loadData: function (callback) {
         // it is not called from outside
-        // loads data from local storage, parses it and put into this._data property
-        dataHandler._data = JSON.parse(localStorage.getItem(dataHandler.keyInLocalStorage));
+        $.when(
+            $.get("http://0.0.0.0:4000/api/boards", function (data) {
+                dataHandler._data["boards"] = JSON.parse(data);
+            }),
+            $.get("http://0.0.0.0:4000/api/cards", function (data) {
+                dataHandler._data["cards"] = JSON.parse(data);
+            }),
+            $.get("http://0.0.0.0:4000/api/statuses", function (data) {
+                dataHandler._data["statuses"] = JSON.parse(data);
+            }),
+            $.get("http://0.0.0.0:4000/api/users", function (data) {
+                dataHandler._data["users"] = JSON.parse(data);
+            }),
+        ).then(function () {
+            callback(dataHandler._data);
+        })
     },
-    _saveData: function () {
+    _saveRecord: function (newRecord, tableName) {
         // it is not called from outside
-        // saves the data from this._data to local storage
+        $.post(`http://0.0.0.0:4000/api/${tableName}/insert`, newRecord);
     },
     init: function () {
-        dataHandler._loadData();
-        dom.initSaveBoardButton();
+        dataHandler._loadData(dom.init);
 
     },
     getBoards: function (callback) {
@@ -49,17 +62,18 @@ let dataHandler = {
         // creates new board, saves it and calls the callback function with its data
         let arrayOfBoards = dataHandler._data.boards;
         let nextId = dataHandler.getNextId(arrayOfBoards);
-        arrayOfBoards.push({id: nextId, title: boardTitle, is_active: true});
-        localStorage.setItem(dataHandler.keyInLocalStorage, JSON.stringify(dataHandler._data));
+        let newBoard = {id: nextId, title: boardTitle, user_id: 2}; // TODO: get user id from session
+        arrayOfBoards.push(newBoard);
+        dataHandler._saveRecord(newBoard, "boards");
         callback(arrayOfBoards[arrayOfBoards.length - 1])
     },
     createNewCard: function (cardTitle, boardId, statusId, callback) {
         // creates new card, saves it and calls the callback function with its data
         let arrayOfCards = dataHandler._data.cards;
         let nextId = dataHandler.getNextId(arrayOfCards);
-        let newCard = {id: nextId, title: cardTitle, board_id: boardId, status_id: statusId, order: 33};
+        let newCard = {id: nextId, title: cardTitle, board_id: boardId, status_id: statusId};
         arrayOfCards.push(newCard);
-        localStorage.setItem(dataHandler.keyInLocalStorage, JSON.stringify(dataHandler._data));
+        dataHandler._saveRecord(newCard, "cards");
         callback(arrayOfCards[arrayOfCards.length - 1]);
     },
     getNextId: function (arrayOfObjects) {
@@ -78,19 +92,6 @@ let dataHandler = {
         }
         let greatestId = Math.max(...arrayOfIds);
         return greatestId;
-    },
-    getOrderLast: function (boardId, statusID) {
-
-
-    },
-    saveDroppedCard: function () {
-        let cards = document.querySelectorAll('.task-card');
-        for( let droppedCard of cards) {
-            droppedCard.addEventListener('drop', function () {
-                console.log(droppedCard.parentNode)
-            })
-        }
-        
     }
     // here comes more features
 };
