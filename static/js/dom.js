@@ -28,7 +28,7 @@ let dom = {
                 let boardId = newCardButton.dataset.boardId;
                 let newCardModal = document.querySelector('#new-card-modal');
                 newCardModal.dataset.boardId = boardId;
-                let newCardTitle = document.querySelector("#new-card-title")
+                let newCardTitle = document.querySelector("#new-card-title");
                 newCardTitle.value = "";
             })
         };
@@ -43,8 +43,7 @@ let dom = {
             let boardHTML = templateHandler.renderBoard(boardObject);
             dom.appendToElement(boardsContainer, boardHTML);
         }
-        let dropable = Array.from(document.querySelectorAll('.card-container'));
-        dragula(dropable);
+        dataHandler.getCardNewStatus(dataHandler.saveCardNewStatus);
 
     },
     loadCardsByBoard: function (arrayOfBoards) {
