@@ -32,6 +32,13 @@ def save_record(table_name):
     return "HTTP/1.1 200 OK"  # TODO: ask a mentor for a proper way to give http response
 
 
+@app.route("/api/<table_name>/<_id>/update", methods=["PUT"])
+def update_record(table_name, _id):
+    record_to_update = request.form.to_dict()
+    data_manager.update_record(table_name, _id, record_to_update)
+    return "HTTP/1.1 200 OK"
+
+
 def main():
     app.run(debug=True,
             host="0.0.0.0",
