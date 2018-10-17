@@ -52,3 +52,13 @@ def update_record(cursor, table_name, _id, dict_of_record):
 def delete_record(cursor, table_name, _id):
     cursor.execute(sql.SQL("DELETE FROM {} WHERE id = {};").format(sql.Identifier(table_name),
                                                                    sql.Literal(_id)))
+
+
+@connection.connection_handler
+def get_password_hash_for_user(cursor, user_name):
+    cursor.execute("""
+                    SELECT password_hash FROM users
+                    WHERE user_name = %s;
+                    """, (user_name, ))
+    password_hash = cursor.fetchone()
+    return password_hash

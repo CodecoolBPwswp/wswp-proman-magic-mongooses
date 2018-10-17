@@ -2,33 +2,29 @@
 
 {% block content %}
     <div class="card" id="login-page-card">
-        <h3 id="login-page-title">Welcome</h3>
-
-        <div id="buttons-container">
-            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#sign-up-modal">Sign up</button>
-            <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#sign-in-modal">Sign in</button>
-        </div>
-    </div>
-
-    <div class="modal fade" id="sign-in-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Sign in to Proman</h3>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
+        <nav>
+            <div id="buttons-container" class="nav nav-tabs justify-content-center" role="tablist">
+                <a href="#nav-sign-up" class="nav-item nav-link active" data-toggle="tab"><h3>Sign up</h3></a>
+                <a href="#nav-sign-in" class="nav-item nav-link" data-toggle="tab"><h3>Sign in</h3></a>
+            </div>
+        </nav>
+        <div class="tab-content">
+            <div class="tab-pane show active" id="nav-sign-up">
                 <form action="">
-                    <div class="modal-body">
-                        <input type="text" name="user_name" placeholder="Enter user name" required>
-                        <input type="password" name="password" placeholder="Enter password" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary"
-                                data-dismiss="modal">Sign in</button>
-                    </div>
+                    <p><input type="text" name="user_name" placeholder="Enter user name" required></p>
+                    <p><input type="password" name="password" placeholder="Enter password" required></p>
+                    <p><button type="submit" class="btn btn-success">Sign up</button></p>
+                </form>
+            </div>
+            <div class="tab-pane" id="nav-sign-in">
+                <form action="{{ url_for("login_verification") }}" method="post">
+                    <p><input type="text" name="user_name" placeholder="Enter user name" required></p>
+                    <p><input type="password" name="password" placeholder="Enter password" required></p>
+                    <p><button type="submit" class="btn btn-success">Sign in</button></p>
                 </form>
             </div>
         </div>
     </div>
+
+
 {% endblock %}

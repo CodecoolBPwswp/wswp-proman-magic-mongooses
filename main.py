@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for
 import data_manager
 import json
+import password_handler
 
 app = Flask(__name__)
 
@@ -14,6 +15,20 @@ def boards():
 @app.route("/login")
 def login_page():
     return render_template("login.html")
+
+
+@app.route("/login", methods=["POST"])
+def login_verification():
+    user_name = request.form["user_name"]
+    entered_password = request.form["password"]
+    password_hash = data_manager.get_password_hash_for_user(user_name)["password_hash"]
+    verified = password_handler.verify_password(entered_password, password_hash)
+
+    if verified:
+        session["user"] = user_name
+        return redirect(url_for("boards"))
+    else:
+        return redirect(url_for("login_page"))  # TODO: display error message
 
 
 @app.route("/api/<table_name>")
@@ -51,6 +66,7 @@ def delete_record(table_name, _id):
 
 
 def main():
+    app.secret_key = "The bar is where I go"
     app.run(debug=True,
             host="0.0.0.0",
             port=4000)
