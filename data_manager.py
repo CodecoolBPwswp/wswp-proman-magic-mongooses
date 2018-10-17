@@ -45,4 +45,4 @@ def update_record(cursor, table_name, _id, dict_of_record):
 
     query_string = "UPDATE {} SET " + placeholders + " WHERE id = {}"
 
-    cursor.execute(sql.SQL(query_string).format(sql.Identifier(table_name), *sql_input))
+    cursor.execute(sql.SQL(query_string).format(sql.Identifier(table_name), *sql_input, sql.Literal(_id)))
