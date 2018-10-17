@@ -129,8 +129,8 @@ let dom = {
         })
     },
     initDeleteCardButton: function () {
-        let deleteCardButton = document.querySelector(`#delete-card`);
-        deleteCardButton.addEventListener('click', function () {
+        let deleteCardButton = document.querySelector(`#delete-card-button`);
+        deleteCardButton.addEventListener("click", function () {
             let cardId = deleteCardButton.dataset.cardId;
             dataHandler.deleteCard(cardId);
         })
