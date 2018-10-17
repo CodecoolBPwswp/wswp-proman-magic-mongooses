@@ -65,3 +65,16 @@ h1 {
     padding: 15px;
 }
 
+div#login-page-card {
+    width: 40%;
+    margin: 40px auto;
+    padding: 20px;
+}
+h3#login-page-title {
+    text-align: center;
+}
+div#buttons-container {
+    text-align: center;
+    margin: 50px auto;
+}
+

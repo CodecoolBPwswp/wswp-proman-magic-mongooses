@@ -11,6 +11,11 @@ def boards():
     return render_template('boards.html')
 
 
+@app.route("/login")
+def login_page():
+    return render_template("login.html")
+
+
 @app.route("/api/<table_name>")
 def table_api(table_name):
     table = data_manager.get_table(table_name)
