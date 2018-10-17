@@ -28,11 +28,10 @@ let dom = {
                 let boardId = newCardButton.dataset.boardId;
                 let newCardModal = document.querySelector('#new-card-modal');
                 newCardModal.dataset.boardId = boardId;
-                let newCardTitle = document.querySelector("#new-card-title")
+                let newCardTitle = document.querySelector("#new-card-title");
                 newCardTitle.value = "";
             })
-
-        }
+        };
     },
     showBoards: function (boards) {
         // shows boards appending them to #boards div
@@ -44,6 +43,8 @@ let dom = {
             let boardHTML = templateHandler.renderBoard(boardObject);
             dom.appendToElement(boardsContainer, boardHTML);
         }
+        dataHandler.getCardNewStatus(dataHandler.saveCardNewStatus);
+
     },
     loadCardsByBoard: function (arrayOfBoards) {
         // retrieves cards and makes showCards called
@@ -64,6 +65,7 @@ let dom = {
                 dom.appendToElement(boardStatusDiv, cardHTML);
             }
         }
+
     },
     loadAllCards: function () {
         dataHandler.getBoards(dom.loadCardsByBoard);

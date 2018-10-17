@@ -65,6 +65,9 @@ h1 {
     padding: 15px;
 }
 
+.card-container {
+    min-height: 100px;
+}
 div#login-page-card {
     width: 40%;
     margin: 40px auto;

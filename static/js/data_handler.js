@@ -92,6 +92,28 @@ let dataHandler = {
         }
         let greatestId = Math.max(...arrayOfIds);
         return greatestId;
+    },
+    getCardNewStatus: function (callback) {
+        let dropable = Array.from(document.querySelectorAll('.card-container'));
+        dragula(dropable).on('drop', function (actualCard) {
+            let cardNewStatusId = actualCard.parentNode.dataset.statusId;
+            let cardId = actualCard.dataset.cardId;
+            let cardBoardId = actualCard.dataset.boardId;
+            let cardTitle = actualCard.innerText;
+            callback(cardNewStatusId, cardId, cardBoardId, cardTitle)
+        })
+    },
+    saveCardNewStatus: function (cardNewStatusId, cardId, cardBoardId, cardTitle) {
+        $.ajax({
+            url: `http://0.0.0.0:4000/api/cards/${cardId}/update`,
+            type: 'PUT',
+            data: {
+                "id": cardId,
+                "title": cardTitle,
+                "board_id": cardBoardId,
+                "status_id": cardNewStatusId
+            }
+        });
     }
     // here comes more features
 };
