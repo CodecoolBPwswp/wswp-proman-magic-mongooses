@@ -50,5 +50,5 @@ def update_record(cursor, table_name, _id, dict_of_record):
 
 @connection.connection_handler
 def delete_record(cursor, table_name, _id):
-    cursor.execute(sql.SQL("DELETE FROM {} WHERE id = {};".format(sql.Identifier(table_name),
-                                                                  sql.Literal(_id))))
+    cursor.execute(sql.SQL("DELETE FROM {} WHERE id = {};").format(sql.Identifier(table_name),
+                                                                   sql.Literal(_id)))
