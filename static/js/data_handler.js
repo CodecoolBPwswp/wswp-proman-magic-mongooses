@@ -25,10 +25,9 @@ let dataHandler = {
             callback(dataHandler._data);
         })
     },
-    _saveData: function () {
+    _saveRecord: function (newRecord, tableName) {
         // it is not called from outside
-        // saves the data from this._data to local storage
-        // JSON.stringify(dataHandler._data);
+        $.post(`http://0.0.0.0:4000/api/${tableName}/insert`, newRecord);
     },
     init: function () {
         dataHandler._loadData(dom.init);
@@ -63,17 +62,18 @@ let dataHandler = {
         // creates new board, saves it and calls the callback function with its data
         let arrayOfBoards = dataHandler._data.boards;
         let nextId = dataHandler.getNextId(arrayOfBoards);
-        arrayOfBoards.push({id: nextId, title: boardTitle, is_active: true});
-        dataHandler._saveData();
+        let newBoard = {id: nextId, title: boardTitle, user_id: 2}; // TODO: get user id from session
+        arrayOfBoards.push(newBoard);
+        dataHandler._saveRecord(newBoard, "boards");
         callback(arrayOfBoards[arrayOfBoards.length - 1])
     },
     createNewCard: function (cardTitle, boardId, statusId, callback) {
         // creates new card, saves it and calls the callback function with its data
         let arrayOfCards = dataHandler._data.cards;
         let nextId = dataHandler.getNextId(arrayOfCards);
-        let newCard = {id: nextId, title: cardTitle, board_id: boardId, status_id: statusId, order: 33};
+        let newCard = {id: nextId, title: cardTitle, board_id: boardId, status_id: statusId};
         arrayOfCards.push(newCard);
-        dataHandler._saveData();
+        dataHandler._saveRecord(newCard, "cards");
         callback(arrayOfCards[arrayOfCards.length - 1]);
     },
     getNextId: function (arrayOfObjects) {
