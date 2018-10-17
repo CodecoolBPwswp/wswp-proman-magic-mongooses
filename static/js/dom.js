@@ -1,5 +1,11 @@
 // It uses data_handler.js to visualize elements
 let dom = {
+    init: function () {
+        dom.loadBoards();
+        dom.setBoardIdOnNewCardModal();
+        dom.initNewCardButton();
+        dom.loadAllCards();
+    },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
         dataHandler.getBoards(dom.showBoards);
