@@ -1,11 +1,13 @@
 {% extends "layout.html" %}
 
 {% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.css">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js' defer></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-        <script src="{{ url_for('static', filename='js/data_handler.js') }}" defer></script>
-        <script src="{{ url_for('static', filename='js/template_handler.js') }}" defer></script>
-        <script src="{{ url_for('static', filename='js/dom.js') }}" defer></script>
-        <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/data_handler.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/template_handler.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/dom.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 {% endblock %}
 
 {% block content %}
