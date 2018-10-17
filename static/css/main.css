@@ -80,4 +80,7 @@ div#buttons-container {
     text-align: center;
     margin: 20px auto;
 }
+.tab-pane {
+    text-align: center;
+}
 
