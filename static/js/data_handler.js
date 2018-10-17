@@ -82,6 +82,15 @@ let dataHandler = {
     getOrderLast: function (boardId, statusID) {
 
 
+    },
+    saveDroppedCard: function () {
+        let cards = document.querySelectorAll('.task-card');
+        for( let droppedCard of cards) {
+            droppedCard.addEventListener('drop', function () {
+                console.log(droppedCard.parentNode)
+            })
+        }
+        
     }
     // here comes more features
 };
