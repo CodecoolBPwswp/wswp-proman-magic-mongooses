@@ -11,8 +11,8 @@ let templateHandler = {
             <p>${boardTitle}</p>
           </div>
           <div class="col-4 col-sm-3">
-            <p><button class="btn btn-info"
-                       id="new-card-button-board-${boardID}" 
+            <p><button class="btn btn-info new-cards-of-boards"
+                       id="new-card-button-board-${boardID}"
                        data-toggle="modal" 
                        data-target="#new-card-modal" 
                        data-board-id="${boardID}">New Card</button></p>

@@ -4,18 +4,28 @@ let dom = {
         // retrieves boards and makes showBoards called
         dataHandler.getBoards(dom.showBoards);
     },
-    initNewCardButton: function (boardId) {
-        let newCardButton = document.querySelector(`#new-card-button-board-${boardId}`);
-        newCardButton.addEventListener("click", function () {
-            let cardTitleInput = document.querySelector("#new-card-title");
-            cardTitleInput.value = "";
-            let saveNewCardButton = document.querySelector("#save-card-button"); // event listeners into different methods
-            saveNewCardButton.addEventListener("click", function (event) {
+    initNewCardButton: function () {
+        let saveNewCardButton = document.querySelector(`#save-card-button`);// get board id from dataset
+        saveNewCardButton.addEventListener("click", function () {
+            let newCardModal = document.querySelector('#new-card-modal');
+            let boardId = newCardModal.dataset.boardId;
                 dom.saveNewCard(boardId);
-                this.removeEventListener("click", arguments.callee);
+            //let newCardButton = document.getElementById('new-card-title');
+            //newCardButton.value = "";
+        })
+    },
+    setBoardIdOnNewCardModal: function () {
+        let newCardButtons = document.getElementsByClassName('new-cards-of-boards');
+        for (let i = 0; i < newCardButtons.length; i++) {
+            let newCardButton = newCardButtons[i];
+            newCardButton.addEventListener('click', function () {
+                let boardId = newCardButton.dataset.boardId;
+                let newCardModal = document.querySelector('#new-card-modal');
+                newCardModal.dataset.boardId = boardId;
             })
-        });
-    }, showBoards: function (boards) {
+        };
+    },
+    showBoards: function (boards) {
         // shows boards appending them to #boards div
         // it adds necessary event listeners also
         let boardsContainer = document.querySelector("#boards-div");
@@ -24,12 +34,10 @@ let dom = {
         for (let boardObject of boards) {
             let boardHTML = templateHandler.renderBoard(boardObject);
             dom.appendToElement(boardsContainer, boardHTML);
-            dom.initNewCardButton(boardObject["id"], arguments);
         }
         let dropable = Array.from(document.querySelectorAll('.card-container'));
         dragula(dropable);
-        //localStorage.setItem(dataHandler.keyInLocalStorage, JSON.stringify(dataHandler._data));
-        debugger;
+
     },
     loadCardsByBoard: function (arrayOfBoards) {
         // retrieves cards and makes showCards called
@@ -88,7 +96,7 @@ let dom = {
                 );
 
                 dom.appendToElement(boardsContainer, newBoardHTML);
-                dom.initNewCardButton(newBoardId);
+                //dom.initNewCardButton();
             });
         })
     },
