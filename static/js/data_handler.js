@@ -114,6 +114,12 @@ let dataHandler = {
                 "status_id": cardNewStatusId
             }
         });
+    },
+    deleteBoard: function (boardId) {
+        $.ajax({
+            url: `http://0.0.0.0:4000/api/boards/${boardId}/delete`,
+            type: 'DELETE'
+        });
     }
     // here comes more features
 };

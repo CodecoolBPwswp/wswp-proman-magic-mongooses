@@ -16,6 +16,10 @@ let templateHandler = {
                        data-toggle="modal" 
                        data-target="#new-card-modal" 
                        data-board-id="${boardID}">New Card</button></p>
+                       
+            <p><button class="btn btn-info delete-boards"
+                       id="delete-board-button-${boardID}"
+                       data-board-id="${boardID}">Delete Board</button></p>
           </div>
         </div>
         <div id="board-${boardID}-content" class="row collapse">
