@@ -9,7 +9,10 @@ app = Flask(__name__)
 @app.route("/")
 def boards():
     """ this is a one-pager which shows all the boards and cards """
-    return render_template('boards.html')
+    if "user" not in session:
+        return redirect(url_for("login_page"))
+    else:
+        return render_template('boards.html')
 
 
 @app.route("/login")
@@ -39,7 +42,7 @@ def logout():
 
 
 @app.route("/api/<table_name>")
-def table_api(table_name):
+def get_table(table_name):
     if "user" not in session:
         return "HTTP/1.1 401 Unauthorized"  # actually this will be the content of a 200 response
     user_id = session["user"]["user_id"]
@@ -57,7 +60,7 @@ def table_api(table_name):
 
 
 @app.route("/api/<table_name>/<_id>")
-def record_api(table_name, _id):
+def get_record(table_name, _id):
     record = data_manager.get_record(table_name, _id)
     json_record = json.dumps(record)
     return json_record
@@ -65,16 +68,22 @@ def record_api(table_name, _id):
 
 @app.route("/api/<table_name>/insert", methods=["POST"])
 def save_record(table_name):
-    record_to_save = request.form.to_dict()
-    data_manager.insert_record(table_name, record_to_save)
-    return "HTTP/1.1 200 OK"  # TODO: ask a mentor for a proper way to give http response
+    if "user" not in session:
+        return "HTTP/1.1 401 Unauthorized"
+    else:
+        record_to_save = request.form.to_dict()
+        if table_name == "boards":
+            record_to_save["user_id"] = session["user"]["user_id"]
+        new_record = data_manager.insert_record(table_name, record_to_save)
+        json_record = json.dumps(new_record)
+        return json_record
 
 
 @app.route("/api/<table_name>/<_id>/update", methods=["PUT"])
 def update_record(table_name, _id):
     record_to_update = request.form.to_dict()
     data_manager.update_record(table_name, _id, record_to_update)
-    return "HTTP/1.1 200 OK"
+    return "HTTP/1.1 200 OK"  # TODO: ask a mentor for a proper way to give http response
 
 
 @app.route("/api/<table_name>/<_id>/delete", methods=["DELETE"])

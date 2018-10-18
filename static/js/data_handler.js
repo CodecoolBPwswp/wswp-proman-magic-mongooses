@@ -24,7 +24,7 @@ let dataHandler = {
     },
     _saveRecord: function (newRecord, tableName) {
         // it is not called from outside
-        $.post(`http://0.0.0.0:4000/api/${tableName}/insert`, newRecord);
+        $.post(`http://0.0.0.0:4000/api/${tableName}/insert`, newRecord); // TODO: add callback
     },
     init: function () {
         dataHandler._loadData(dom.init);
@@ -59,7 +59,7 @@ let dataHandler = {
         // creates new board, saves it and calls the callback function with its data
         let arrayOfBoards = dataHandler._data.boards;
         let nextId = dataHandler.getNextId(arrayOfBoards);
-        let newBoard = {id: nextId, title: boardTitle, user_id: 2}; // TODO: get user id from session
+        let newBoard = {title: boardTitle};  // TODO: doesn't work if _data only contains one user's content!!
         arrayOfBoards.push(newBoard);
         dataHandler._saveRecord(newBoard, "boards");
         callback(arrayOfBoards[arrayOfBoards.length - 1])
@@ -68,7 +68,7 @@ let dataHandler = {
         // creates new card, saves it and calls the callback function with its data
         let arrayOfCards = dataHandler._data.cards;
         let nextId = dataHandler.getNextId(arrayOfCards);
-        let newCard = {id: nextId, title: cardTitle, board_id: boardId, status_id: statusId};
+        let newCard = {title: cardTitle, board_id: boardId, status_id: statusId};
         arrayOfCards.push(newCard);
         dataHandler._saveRecord(newCard, "cards");
         callback(arrayOfCards[arrayOfCards.length - 1]);
