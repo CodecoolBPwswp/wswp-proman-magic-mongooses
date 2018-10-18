@@ -4,10 +4,38 @@ from psycopg2 import sql
 
 
 @connection.connection_handler
-def get_table(cursor, table_name):
-    cursor.execute(sql.SQL("SELECT * FROM {}").format(sql.Identifier(table_name)))
+def get_id_for_user(cursor, user_name):
+    cursor.execute("""
+                    SELECT id FROM users
+                    WHERE user_name = %s
+                    """, (user_name, ))
+    user_id = cursor.fetchone()
+    return user_id
+
+
+@connection.connection_handler
+def get_boards_for_user(cursor, user_id):
+    cursor.execute(sql.SQL("SELECT * FROM boards WHERE user_id = {}").format(sql.Literal(user_id)))
     table = cursor.fetchall()
     return table
+
+
+@connection.connection_handler
+def get_cards_for_user(cursor, user_id):
+    cursor.execute("""
+                    SELECT cards.id, cards.title, status_id, board_id
+                    FROM cards JOIN boards b on cards.board_id = b.id
+                    WHERE b.user_id = %s
+                    """, (user_id, ))
+    list_of_cards = cursor.fetchall()
+    return list_of_cards
+
+
+@connection.connection_handler
+def get_statuses(cursor):
+    cursor.execute("SELECT * FROM statuses")
+    list_of_statuses = cursor.fetchall()
+    return list_of_statuses
 
 
 @connection.connection_handler

@@ -25,7 +25,8 @@ def login_verification():
     verified = password_handler.verify_password(entered_password, password_hash)
 
     if verified:
-        session["user"] = user_name
+        user_id = data_manager.get_id_for_user(user_name)["id"]
+        session["user"] = {"user_name": user_name, "user_id": user_id}
         return redirect(url_for("boards"))
     else:
         return redirect(url_for("login_page"))  # TODO: display error message
@@ -39,7 +40,18 @@ def logout():
 
 @app.route("/api/<table_name>")
 def table_api(table_name):
-    table = data_manager.get_table(table_name)
+    if "user" not in session:
+        return "HTTP/1.1 401 Unauthorized"  # actually this will be the content of a 200 response
+    user_id = session["user"]["user_id"]
+    table = []
+    if table_name == "boards":
+        table = data_manager.get_boards_for_user(user_id)
+    elif table_name == "cards":
+        table = data_manager.get_cards_for_user(user_id)
+    elif table_name == "statuses":
+        table = data_manager.get_statuses()
+    else:
+        return "HTTP/1.1 403 Forbidden"
     json_table = json.dumps(table)
     return json_table  # TODO: should we give back anything else, like details of a http response?
 

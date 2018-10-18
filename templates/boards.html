@@ -11,8 +11,8 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container-fixed d-flex justify-content-end header-div">
-        <p<span class="badge badge-secondary">Logged in as <br>{{ session["user"] }}</span></h5>
+    <div class="container-fixed d-flex justify-content-end header-div" id="user-info" data-username="{{ session["user"] }}">
+        <p<span class="badge badge-secondary">Logged in as <br>{{ session["user"]["user_name"] }}</span></h5>
     </div>
     <div class="header-div container-fixed d-flex justify-content-between">
         <button id="new-board-button"

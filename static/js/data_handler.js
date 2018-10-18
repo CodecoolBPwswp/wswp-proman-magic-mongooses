@@ -18,9 +18,6 @@ let dataHandler = {
             $.get("http://0.0.0.0:4000/api/statuses", function (data) {
                 dataHandler._data["statuses"] = JSON.parse(data);
             }),
-            $.get("http://0.0.0.0:4000/api/users", function (data) {
-                dataHandler._data["users"] = JSON.parse(data);
-            }),
         ).then(function () {
             callback(dataHandler._data);
         })
