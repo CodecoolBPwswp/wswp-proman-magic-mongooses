@@ -20,28 +20,35 @@ def register_user():
     new_user = request.form.to_dict()
     new_password_hash = password_handler.create_password_hash(new_user["password"])
     dict_of_user = {"user_name": new_user["user_name"], "password_hash": new_password_hash}
-    session["user"] = data_manager.insert_record("users", dict_of_user)
-    return redirect(url_for("boards"))
+    try:
+        session["user"] = data_manager.insert_record("users", dict_of_user)
+        return redirect(url_for("boards"))
+    except KeyError:
+        return render_template("login.html", error_message="User name already exists")
 
 
 @app.route("/login")
-def login_page():
-    return render_template("login.html")
+def login_page(error_message=None):
+    return render_template("login.html", error_message=error_message)
 
 
 @app.route("/login", methods=["POST"])
 def login_verification():
     user_name = request.form["user_name"]
     entered_password = request.form["password"]
-    password_hash = data_manager.get_password_hash_for_user(user_name)["password_hash"]
-    verified = password_handler.verify_password(entered_password, password_hash)
+    try:
+        password_hash = data_manager.get_password_hash_for_user(user_name)["password_hash"]
+    except KeyError:
+        verified = False
+    else:
+        verified = password_handler.verify_password(entered_password, password_hash)
 
     if verified:
         user_id = data_manager.get_id_for_user(user_name)["id"]
         session["user"] = {"user_name": user_name, "id": user_id}
         return redirect(url_for("boards"))
     else:
-        return redirect(url_for("login_page"))  # TODO: display error message
+        return render_template("login.html", error_message="Authentication failed")
 
 
 @app.route("/logout", methods=["POST"])

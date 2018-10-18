@@ -1,5 +1,6 @@
 import connection
 import utils
+import psycopg2
 from psycopg2 import sql
 
 
@@ -59,10 +60,13 @@ def insert_record(cursor, table_name, dict_of_record):
     column_identifiers = [sql.Identifier(column_name) for column_name in columns_to_insert_into]
     value_literals = [sql.Literal(value) for value in values_to_insert]
     query_string = sql.SQL(query_skeleton).format(sql.Identifier(table_name), *column_identifiers, *value_literals)
-
-    cursor.execute(query_string)
-    new_record = cursor.fetchone()
-    return new_record
+    try:
+        cursor.execute(query_string)
+    except psycopg2.IntegrityError:
+        raise KeyError
+    else:
+        new_record = cursor.fetchone()
+        return new_record
 
 
 @connection.connection_handler
@@ -90,4 +94,7 @@ def get_password_hash_for_user(cursor, user_name):
                     WHERE user_name = %s;
                     """, (user_name, ))
     password_hash = cursor.fetchone()
-    return password_hash
+    if password_hash is not None:
+        return password_hash
+    else:
+        raise KeyError
