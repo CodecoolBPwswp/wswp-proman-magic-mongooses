@@ -54,15 +54,15 @@ def insert_record(cursor, table_name, dict_of_record):
 
     number_of_columns = len(columns_to_insert_into)
     placeholders = ",".join(["{}"] * number_of_columns)
-    query_skeleton = "INSERT INTO {} (" + placeholders + ") VALUES (" + placeholders + ") RETURNING id;"
+    query_skeleton = "INSERT INTO {} (" + placeholders + ") VALUES (" + placeholders + ") RETURNING *;"
 
     column_identifiers = [sql.Identifier(column_name) for column_name in columns_to_insert_into]
     value_literals = [sql.Literal(value) for value in values_to_insert]
     query_string = sql.SQL(query_skeleton).format(sql.Identifier(table_name), *column_identifiers, *value_literals)
 
     cursor.execute(query_string)
-    new_id = cursor.fetchone()
-    return new_id
+    new_record = cursor.fetchone()
+    return new_record
 
 
 @connection.connection_handler

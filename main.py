@@ -15,6 +15,15 @@ def boards():
         return render_template('boards.html')
 
 
+@app.route("/register-user", methods=["POST"])
+def register_user():
+    new_user = request.form.to_dict()
+    new_password_hash = password_handler.create_password_hash(new_user["password"])
+    dict_of_user = {"user_name": new_user["user_name"], "password_hash": new_password_hash}
+    session["user"] = data_manager.insert_record("users", dict_of_user)
+    return redirect(url_for("boards"))
+
+
 @app.route("/login")
 def login_page():
     return render_template("login.html")
@@ -29,7 +38,7 @@ def login_verification():
 
     if verified:
         user_id = data_manager.get_id_for_user(user_name)["id"]
-        session["user"] = {"user_name": user_name, "user_id": user_id}
+        session["user"] = {"user_name": user_name, "id": user_id}
         return redirect(url_for("boards"))
     else:
         return redirect(url_for("login_page"))  # TODO: display error message
@@ -45,7 +54,7 @@ def logout():
 def get_table(table_name):
     if "user" not in session:
         return "HTTP/1.1 401 Unauthorized"  # actually this will be the content of a 200 response
-    user_id = session["user"]["user_id"]
+    user_id = session["user"]["id"]
     table = []
     if table_name == "boards":
         table = data_manager.get_boards_for_user(user_id)
@@ -73,7 +82,7 @@ def save_record(table_name):
     else:
         record_to_save = request.form.to_dict()
         if table_name == "boards":
-            record_to_save["user_id"] = session["user"]["user_id"]
+            record_to_save["user_id"] = session["user"]["id"]
         new_record = data_manager.insert_record(table_name, record_to_save)
         json_record = json.dumps(new_record)
         return json_record
