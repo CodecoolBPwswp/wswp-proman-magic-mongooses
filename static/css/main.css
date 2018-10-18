@@ -68,3 +68,12 @@ h1 {
 .card-container {
     min-height: 100px;
 }
+
+.delete-buttons-of-cards {
+    margin: auto 5px;
+}
+
+.card-paragraph {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
