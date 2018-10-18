@@ -32,7 +32,7 @@ let dom = {
                 let newCardTitle = document.querySelector("#new-card-title");
                 newCardTitle.value = "";
             })
-        };
+        }
     },
     showBoards: function (boards) {
         // shows boards appending them to #boards div
@@ -41,8 +41,7 @@ let dom = {
         boardsContainer.innerHTML = "";
 
         for (let boardObject of boards) {
-            let boardHTML = templateHandler.renderBoard(boardObject);
-            dom.appendToElement(boardsContainer, boardHTML);
+            templateHandler.renderBoard(boardObject, dom.appendNewBoard);
         }
         dataHandler.getCardNewStatus(dataHandler.saveCardNewStatus);
 
@@ -61,9 +60,9 @@ let dom = {
 
             for (let singleCard of cards) {
                 let statusId = singleCard.status_id;
-                let boardStatusDiv = document.querySelector(`#board-${boardId}-content .board-status-${statusId} .card-container`);
-                let cardHTML = templateHandler.renderCard(singleCard);
-                dom.appendToElement(boardStatusDiv, cardHTML);
+                templateHandler.renderCard(singleCard, function (renderedCard) {
+                    dom.appendNewCard(renderedCard, boardId, statusId)
+                });
             }
         }
 
@@ -76,7 +75,7 @@ let dom = {
         let fakeDiv = document.createElement('div');
         fakeDiv.innerHTML = textToAppend.trim();
 
-        for (childNode of fakeDiv.childNodes) {
+        for (let childNode of fakeDiv.childNodes) {
             if (prepend) {
                 elementToExtend.prependChild(childNode);
             } else {
@@ -95,15 +94,7 @@ let dom = {
                 alert("Please enter a title");
                 return false;
             }
-            dataHandler.createNewBoard(titleInput, function () {
-                let boardsContainer = document.querySelector("#boards-div");
-                let newBoardId = dataHandler.getGreatestId("boards");
-                let newBoardHTML = templateHandler.renderBoard(
-                    {id: newBoardId, title: titleInput}
-                );
-
-                dom.appendToElement(boardsContainer, newBoardHTML);
-            });
+            dataHandler.createNewBoard(titleInput);
         })
     },
     saveNewCard: function (boardId) {
@@ -111,15 +102,7 @@ let dom = {
         if (cardTitleInput === "") {
             return false;
         }
-        let initialStatusId = 1;
-        dataHandler.createNewCard(cardTitleInput, boardId, initialStatusId, function () {
-            let boardStatusDiv = document.querySelector(`#board-${boardId}-content .board-status-${initialStatusId}`);
-            let newId = dataHandler.getGreatestId("cards");
-            let newCardHTML = templateHandler.renderCard({id: newId, title: cardTitleInput});
-            dom.appendToElement(boardStatusDiv, newCardHTML);
-            dom.setDeleteButtonOnNewCard(newId);
-
-        })
+        dataHandler.createNewCard(cardTitleInput, boardId)
     },
     initNewBoardButton: function () {
         let newBoardButton = document.querySelector("#new-board-button");
@@ -148,5 +131,13 @@ let dom = {
             dataHandler.deleteCard(cardId);
             dom.removeCard(cardId);
         })
+    },
+    appendNewBoard: function (boardHTML) {
+        let boardContainer = document.querySelector("#boards-div");
+        dom.appendToElement(boardContainer, boardHTML);
+    },
+    appendNewCard: function (cardHTML, boardId, statusId) {
+        let boardStatusDiv = document.querySelector(`#board-${boardId}-content .board-status-${statusId} .card-container`);
+        dom.appendToElement(boardStatusDiv, cardHTML);
     }
 };

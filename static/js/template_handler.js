@@ -1,5 +1,5 @@
 let templateHandler = {
-    renderBoard: function(board) {
+    renderBoard: function(board, callback) {
       let boardTitle = board.title;
       let boardID = board.id;
       let arrayOfStatuses = dataHandler.getStatuses();
@@ -37,9 +37,9 @@ let templateHandler = {
           </div>
         </div>
       `;
-      return boardTemplate;
+      callback(boardTemplate);
     },
-    renderCard: function (card) {
+    renderCard: function (card, callback) {
         let cardTitle = card.title;
         let cardId = card.id;
         let cardBoardId = card.board_id;
@@ -57,6 +57,6 @@ let templateHandler = {
                 </div>                             
             </div>
             `;
-        return cardTemplate;
+        callback(cardTemplate);
     }
 };
