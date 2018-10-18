@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="card" id="login-page-card">
+        <nav>
+            <div id="buttons-container" class="nav nav-tabs justify-content-center" role="tablist">
+                <a href="#nav-sign-up" class="nav-item nav-link" data-toggle="tab"><h4>Sign up</h4></a>
+                <a href="#nav-sign-in" class="nav-item nav-link active" data-toggle="tab"><h4>Sign in</h4></a>
+            </div>
+        </nav>
+        <div class="tab-content">
+            <div class="tab-pane" id="nav-sign-up">
+                <form action="{{ url_for("register_user") }}" method="post">
+                    <p><input type="text" name="user_name" placeholder="Enter user name" required></p>
+                    <p><input type="password" name="password" placeholder="Enter password" required></p>
+                    <p><button type="submit" class="btn btn-success">Sign up</button></p>
+                </form>
+            </div>
+            <div class="tab-pane show active" id="nav-sign-in">
+                <form action="{{ url_for("login_verification") }}" method="post">
+                    <p><input type="text" name="user_name" placeholder="Enter user name" required></p>
+                    <p><input type="password" name="password" placeholder="Enter password" required></p>
+                    <p><button type="submit" class="btn btn-success">Sign in</button></p>
+                </form>
+            </div>
+        </div>
+        {% if error_message %}
+        <div class="error-message">
+            <p><strong>{{ error_message }}</strong></p>
+        </div>
+        {% endif %}
+    </div>
+
+
+{% endblock %}

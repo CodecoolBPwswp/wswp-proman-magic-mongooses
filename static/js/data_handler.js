@@ -18,16 +18,33 @@ let dataHandler = {
             $.get("http://0.0.0.0:4000/api/statuses", function (data) {
                 dataHandler._data["statuses"] = JSON.parse(data);
             }),
-            $.get("http://0.0.0.0:4000/api/users", function (data) {
-                dataHandler._data["users"] = JSON.parse(data);
-            }),
         ).then(function () {
             callback(dataHandler._data);
         })
     },
     _saveRecord: function (newRecord, tableName) {
         // it is not called from outside
-        $.post(`http://0.0.0.0:4000/api/${tableName}/insert`, newRecord);
+        $.post(`http://0.0.0.0:4000/api/${tableName}/insert`, newRecord, function (data) {
+            let objectOfNewRecord = JSON.parse(data);
+            dataHandler._data[tableName].push(objectOfNewRecord);
+            if (tableName === "boards") {
+                templateHandler.renderBoard(objectOfNewRecord, dom.appendNewBoard);
+            } else {
+                templateHandler.renderCard(objectOfNewRecord, function (renderedCard) {
+                    let boardId = objectOfNewRecord["board_id"];
+                    let statusId = objectOfNewRecord["status_id"];
+                    let cardId = objectOfNewRecord["id"];
+                    dom.appendNewCard(renderedCard, boardId, statusId);
+                    dom.setDeleteButtonOnNewCard(cardId);
+                });
+            }
+        }); // TODO: add callback
+    },
+    _deleteRecord: function (tableName, recordId) {
+        $.ajax({
+            url: `http://0.0.0.0:4000/api/${tableName}/${recordId}/delete`,
+            type: "DELETE"
+        });
     },
     init: function () {
         dataHandler._loadData(dom.init);
@@ -38,60 +55,29 @@ let dataHandler = {
         let boards = dataHandler._data.boards;
         callback(boards);
     },
-    getBoard: function (boardId, callback) {
-        // the board is retrieved and then the callback function is called with the board
-
-    },
     getStatuses: function () {
         // the statuses are retrieved and then the callback function is called with the statuses
         let statuses = dataHandler._data.statuses;
         return statuses;
-    },
-    getStatus: function (statusId, callback) {
-        // the status is retrieved and then the callback function is called with the status
     },
     getCardsByBoardId: function (boardId, callback) {
         // the cards are retrieved and then the callback function is called with the cards
         let cardsOfBoard = dataHandler._data.cards.filter(cardObject => cardObject.board_id === boardId);
         callback(cardsOfBoard);
     },
-    getCard: function (cardId, callback) {
-        // the card is retrieved and then the callback function is called with the card
-    },
-    createNewBoard: function (boardTitle, callback) {
+    createNewBoard: function (boardTitle) {
         // creates new board, saves it and calls the callback function with its data
-        let arrayOfBoards = dataHandler._data.boards;
-        let nextId = dataHandler.getNextId(arrayOfBoards);
-        let newBoard = {id: nextId, title: boardTitle, user_id: 2}; // TODO: get user id from session
-        arrayOfBoards.push(newBoard);
+        let newBoard = {title: boardTitle};  // TODO: doesn't work if _data only contains one user's content!!
         dataHandler._saveRecord(newBoard, "boards");
-        callback(arrayOfBoards[arrayOfBoards.length - 1])
     },
-    createNewCard: function (cardTitle, boardId, statusId, callback) {
+    createNewCard: function (cardTitle, boardId, statusId) {
         // creates new card, saves it and calls the callback function with its data
-        let arrayOfCards = dataHandler._data.cards;
-        let nextId = dataHandler.getNextId(arrayOfCards);
-        let newCard = {id: nextId, title: cardTitle, board_id: boardId, status_id: statusId};
-        arrayOfCards.push(newCard);
+        let initialStatusId = 1;
+        let newCard = {title: cardTitle, board_id: boardId, status_id: initialStatusId};
         dataHandler._saveRecord(newCard, "cards");
-        callback(arrayOfCards[arrayOfCards.length - 1]);
     },
-    getNextId: function (arrayOfObjects) {
-        let existingIds = [];
-        for (let object of arrayOfObjects) { // could be a simple max algorithm
-            existingIds.push(object["id"]);
-        }
-        let nextId = Math.max(...existingIds) + 1;
-        return nextId;
-    },
-    getGreatestId: function (dataType) {
-        let arrayOfData = dataHandler._data[dataType];
-        let arrayOfIds = [];
-        for (let dataObject of arrayOfData) {
-            arrayOfIds.push(dataObject["id"]);
-        }
-        let greatestId = Math.max(...arrayOfIds);
-        return greatestId;
+    deleteCard: function (cardId) {
+        dataHandler._deleteRecord("cards", cardId);
     },
     getCardNewStatus: function (callback) {
         let dropable = Array.from(document.querySelectorAll('.card-container'));
