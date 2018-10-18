@@ -26,6 +26,12 @@ let dataHandler = {
         // it is not called from outside
         $.post(`http://0.0.0.0:4000/api/${tableName}/insert`, newRecord); // TODO: add callback
     },
+    _deleteRecord: function (tableName, recordId) {
+        $.ajax({
+            url: `http://0.0.0.0:4000/api/${tableName}/${recordId}/delete`,
+            type: "DELETE"
+        });
+    },
     init: function () {
         dataHandler._loadData(dom.init);
 
@@ -72,6 +78,9 @@ let dataHandler = {
         arrayOfCards.push(newCard);
         dataHandler._saveRecord(newCard, "cards");
         callback(arrayOfCards[arrayOfCards.length - 1]);
+    },
+    deleteCard: function (cardId) {
+        dataHandler._deleteRecord("cards", cardId);
     },
     getNextId: function (arrayOfObjects) {
         let existingIds = [];

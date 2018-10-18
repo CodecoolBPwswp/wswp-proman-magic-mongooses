@@ -7,6 +7,7 @@ let dom = {
         dom.setBoardIdOnNewCardModal();
         dom.initNewCardButton();
         dom.loadAllCards();
+        dom.initDeleteCardButtons();
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
@@ -69,7 +70,6 @@ let dom = {
     },
     loadAllCards: function () {
         dataHandler.getBoards(dom.loadCardsByBoard);
-
     },
     appendToElement: function (elementToExtend, textToAppend, prepend = false) {
         // function to append new DOM elements (represented by a string) to an existing DOM element
@@ -114,17 +114,39 @@ let dom = {
         let initialStatusId = 1;
         dataHandler.createNewCard(cardTitleInput, boardId, initialStatusId, function () {
             let boardStatusDiv = document.querySelector(`#board-${boardId}-content .board-status-${initialStatusId}`);
-            let newCardHTML = templateHandler.renderCard(
-                {id: dataHandler.getGreatestId("cards"), title: cardTitleInput}
-            );
+            let newId = dataHandler.getGreatestId("cards");
+            let newCardHTML = templateHandler.renderCard({id: newId, title: cardTitleInput});
             dom.appendToElement(boardStatusDiv, newCardHTML);
-        });
+            dom.setDeleteButtonOnNewCard(newId);
+
+        })
     },
     initNewBoardButton: function () {
         let newBoardButton = document.querySelector("#new-board-button");
         newBoardButton.addEventListener("click", function () {
             let boardTitleInput = document.querySelector("#new-board-title");
             boardTitleInput.value = "";
+        })
+    },
+    initDeleteCardButtons: function () {
+        let deleteCardButtons = document.querySelectorAll(".delete-buttons-of-cards");
+        for (let deleteCardButton of deleteCardButtons) {
+              deleteCardButton.addEventListener("click", function () {
+                  let cardId = deleteCardButton.dataset.cardId;
+                  dataHandler.deleteCard(cardId);
+                  dom.removeCard(cardId);
+              })
+        }
+    },
+    removeCard: function (cardId) {
+        let cardToRemove = document.querySelector(`#card-${cardId}`);
+        $(cardToRemove).remove();
+    },
+    setDeleteButtonOnNewCard: function (cardId) {
+        let deleteCardButton = document.querySelector(`#delete-card-button-${cardId}`);
+        deleteCardButton.addEventListener("click", function () {
+            dataHandler.deleteCard(cardId);
+            dom.removeCard(cardId);
         })
     }
 };

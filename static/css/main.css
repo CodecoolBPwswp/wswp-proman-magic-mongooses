@@ -84,3 +84,13 @@ div#buttons-container {
     text-align: center;
 }
 
+
+
+.delete-buttons-of-cards {
+    margin: auto 5px;
+}
+
+.card-paragraph {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

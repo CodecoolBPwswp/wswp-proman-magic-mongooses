@@ -41,12 +41,21 @@ let templateHandler = {
     },
     renderCard: function (card) {
         let cardTitle = card.title;
-        console.log(cardTitle);
         let cardId = card.id;
         let cardBoardId = card.board_id;
         let cardTemplate =
             `
-            <div class="task-card col-sm-12" data-card-id="${cardId}" data-board-id="${cardBoardId}">${cardTitle}</div>
+            <div class="task-card col-sm-12"
+                 id="card-${cardId}"
+                 data-card-id="${cardId}"
+                 data-board-id="${cardBoardId}">
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="card-paragraph">${cardTitle}</p>
+                    <p class="card-paragraph"><i class="btn fa fa-trash fa-fw delete-buttons-of-cards"
+                       id="delete-card-button-${cardId}"
+                       data-card-id="${cardId}"></i></p>
+                </div>                             
+            </div>
             `;
         return cardTemplate;
     }
