@@ -3,9 +3,6 @@ function init() {
     // init data
     dataHandler.init();
     // loads the boards to the screen
-    dom.loadBoards();
-    // loads the cards for each board
-    dom.loadAllCards();
 }
 
 init();

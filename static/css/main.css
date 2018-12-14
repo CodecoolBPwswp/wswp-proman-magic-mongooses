@@ -8,7 +8,7 @@ h1 {
 }
 
 .header-div {
-    margin: auto 20px;
+    margin: 10px 20px;
 }
 
 .board-container {
@@ -65,3 +65,39 @@ h1 {
     padding: 15px;
 }
 
+.card-container {
+    min-height: 100px;
+}
+div#login-page-card {
+    width: 40%;
+    margin: 40px auto;
+    padding: 20px;
+}
+h3#login-page-title {
+    text-align: center;
+}
+div#buttons-container {
+    text-align: center;
+    margin: 20px auto;
+}
+.tab-pane {
+    text-align: center;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+}
+
+input {
+    border-radius: 4px;
+}
+
+.delete-buttons-of-cards {
+    margin: auto 5px;
+}
+
+.card-paragraph {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
